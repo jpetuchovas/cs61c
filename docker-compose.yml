@@ -1,0 +1,14 @@
+
+version: "3"
+services:
+  cs61c:
+    build:
+      context: ./
+    cap_add:
+      - SYS_PTRACE
+    container_name: cs61c
+    image: cs61c
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - ./:/cs61c
