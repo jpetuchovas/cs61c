@@ -1,5 +1,5 @@
 beargit: main.c beargit.c beargit.h util.h
-	gcc -std=c99 main.c beargit.c -o beargit
+	gcc -ggdb -std=c99 main.c beargit.c -o beargit
 
 clean:
 	rm -rf beargit autotest test
