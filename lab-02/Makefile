@@ -5,11 +5,11 @@ CFLAGS=-ggdb -Wall -std=c99
 LDFLAGS=
 
 ifeq ($(UNAME_S), Darwin)
-    MEMCHECK=valgrind --tool=memcheck --leak-check=full --track-origins=yes --dsymutil=yes --suppressions=osx_vector.supp
+	MEMCHECK=valgrind --tool=memcheck --leak-check=full --track-origins=yes --dsymutil=yes --suppressions=osx_vector.supp
 endif
 
 ifeq ($(UNAME_S), Linux)
-    MEMCHECK=valgrind --tool=memcheck --leak-check=full --track-origins=yes
+	MEMCHECK=valgrind --tool=memcheck --leak-check=full --track-origins=yes
 endif
 
 VECTOR_OBJS=vector.o vector-test.o
