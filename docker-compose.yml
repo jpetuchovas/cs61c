@@ -12,3 +12,9 @@ services:
       - seccomp:unconfined
     volumes:
       - ./:/cs61c
+  mips:
+    container_name: mips
+    command: /bin/bash
+    image: dockcross/linux-mips
+    volumes:
+      - ./:/cs61c

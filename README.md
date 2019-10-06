@@ -24,3 +24,14 @@ Run the commands:
 docker-compose run --rm cs61c
 cd /cs61c
 ```
+
+### Using a Cross-Compiler for MIPS
+
+A cross-compiler for MIPS called `mips-gcc` can be used by running the commands:
+
+```bash
+docker-compose run --rm mips bash
+cd /cs61c
+```
+
+Then use `$CC` to compile C code.
