@@ -30,7 +30,7 @@ cd /cs61c
 A cross-compiler for MIPS called `mips-gcc` can be used by running the commands:
 
 ```bash
-docker-compose run --rm mips bash
+docker-compose run --rm mips
 cd /cs61c
 ```
 
