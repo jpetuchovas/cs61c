@@ -1,4 +1,4 @@
-CUNIT := -L/home/ff/cs61c/cunit/install/lib -I/home/ff/cs61c/cunit/install/include -lcunit
+CUNIT := -lcunit
 
 beargit: main.c beargit.c util.c beargit.h util.h
 	gcc -g -std=c99 main.c beargit.c util.c -o beargit
@@ -10,7 +10,4 @@ clean:
 	rm -rf beargit autotest test beargit-unittest TEST_STDOUT TEST_STDERR
 
 check: beargit
-ifndef INSTMANPATH
-	$(error You need to run 'make check' on an instructional machine, such as hive*.cs.berkeley.edu)
-endif
 	python2.7 tester.pyc beargit.c
