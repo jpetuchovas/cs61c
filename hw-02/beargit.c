@@ -299,7 +299,7 @@ int beargit_log() {
 // ---------------------------------------
 
 // This adds a check to beargit_commit that ensures we are on the HEAD of a branch.
-int beargit_commit(const char* msg) {
+int beargit_commit(const char *msg) {
   char current_branch[BRANCHNAME_SIZE];
   read_string_from_file(".beargit/.current_branch", current_branch, BRANCHNAME_SIZE);
 
@@ -311,9 +311,9 @@ int beargit_commit(const char* msg) {
   return beargit_commit_hw1(msg);
 }
 
-const char* digits = "61c";
+const char *digits = "61c";
 
-void next_commit_id(char* commit_id) {
+void next_commit_id(char *commit_id) {
   char current_branch[BRANCHNAME_SIZE];
   read_string_from_file(".beargit/.current_branch", current_branch, BRANCHNAME_SIZE);
 
@@ -336,13 +336,13 @@ void next_commit_id(char* commit_id) {
 
 // This helper function returns the branch number for a specific branch, or
 // returns -1 if the branch does not exist.
-int get_branch_number(const char* branch_name) {
-  FILE* fbranches = fopen(".beargit/.branches", "r");
+int get_branch_number(const char *branch_name) {
+  FILE *fbranches = fopen(".beargit/.branches", "r");
 
   int branch_index = -1;
   int counter = 0;
-  char line[FILENAME_SIZE];
-  while(fgets(line, sizeof(line), fbranches)) {
+  char line[BRANCHNAME_SIZE];
+  while (fgets(line, sizeof(line), fbranches)) {
     strtok(line, "\n");
     if (strcmp(line, branch_name) == 0) {
       branch_index = counter;
@@ -363,6 +363,24 @@ int get_branch_number(const char* branch_name) {
 
 int beargit_branch() {
   /* COMPLETE THE REST */
+  char current_branch[BRANCHNAME_SIZE];
+  read_string_from_file(".beargit/.current_branch", current_branch, BRANCHNAME_SIZE);
+
+  FILE *fbranches = fopen(".beargit/.branches", "r");
+
+  char line[BRANCHNAME_SIZE];
+  while (fgets(line, sizeof(line), fbranches)) {
+    strtok(line, "\n");
+    if (strcmp(line, current_branch) == 0) {
+      fprintf(stdout, "* ");
+    } else {
+      fprintf(stdout, "  ");
+    }
+
+    fprintf(stdout, "%s\n", line);
+  }
+
+  fclose(fbranches);
 
   return 0;
 }
@@ -373,20 +391,33 @@ int beargit_branch() {
  *
  */
 
-int checkout_commit(const char* commit_id) {
+int checkout_commit(const char *commit_id) {
   /* COMPLETE THE REST */
   return 0;
 }
 
-int is_it_a_commit_id(const char* commit_id) {
+int is_it_a_commit_id(const char *commit_id) {
   /* COMPLETE THE REST */
+  if (strlen(commit_id) != COMMIT_ID_BYTES) {
+    return 0;
+  }
+
+  char digit;
+  while ((digit = *commit_id) != '\0') {
+    if ((digit != '6') && (digit != '1') && (digit != 'c')) {
+      return 0;
+    }
+
+    commit_id++;
+  }
+
   return 1;
 }
 
-int beargit_checkout(const char* arg, int new_branch) {
+int beargit_checkout(const char *arg, int new_branch) {
   // Get the current branch
   char current_branch[BRANCHNAME_SIZE];
-  read_string_from_file(".beargit/.current_branch", "current_branch", BRANCHNAME_SIZE);
+  read_string_from_file(".beargit/.current_branch", current_branch, BRANCHNAME_SIZE);
 
   // If not detached, update the current branch by storing the current HEAD into that branch's file...
   // Even if we cancel later, this is still ok.
@@ -413,7 +444,7 @@ int beargit_checkout(const char* arg, int new_branch) {
   }
 
   // Just a better name, since we now know the argument is a branch name.
-  const char* branch_name = arg;
+  const char *branch_name = arg;
 
   // Read branches file (giving us the HEAD commit id for that branch).
   int branch_exists = (get_branch_number(branch_name) >= 0);
@@ -422,18 +453,18 @@ int beargit_checkout(const char* arg, int new_branch) {
   if (!(!branch_exists || !new_branch)) {
     fprintf(stderr, "ERROR: A branch named %s already exists\n", branch_name);
     return 1;
-  } else if (!branch_exists && new_branch) {
+  } else if (!branch_exists && !new_branch) {
     fprintf(stderr, "ERROR: No branch %s exists\n", branch_name);
     return 1;
   }
 
   // File for the branch we are changing into.
-  char* branch_file = ".beargit/.branch_";
+  char branch_file[BRANCHNAME_SIZE+50] = ".beargit/.branch_";
   strcat(branch_file, branch_name);
 
   // Update the branch file if new branch is created (now it can't go wrong anymore)
   if (new_branch) {
-    FILE* fbranches = fopen(".beargit/.branches", "a");
+    FILE *fbranches = fopen(".beargit/.branches", "a");
     fprintf(fbranches, "%s\n", branch_name);
     fclose(fbranches);
     fs_cp(".beargit/.prev", branch_file);
