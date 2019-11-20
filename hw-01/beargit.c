@@ -120,7 +120,7 @@ int beargit_rm(const char *filename) {
     fs_rm(".beargit/.newindex");
     fprintf(stderr, "ERROR: File %s not tracked\n", filename);
     return 1;
-   }
+  }
 
   fclose(findex);
   fclose(fnewindex);
@@ -213,8 +213,6 @@ int beargit_commit(const char *msg) {
     fs_cp(line, commit_file_path);
   }
 
-  // Erase the contents of the index file.
-  freopen(".beargit/.index", "w", findex);
   fclose(findex);
 
   sprintf(commit_file_path, "%s/.msg", commit_dir_path);

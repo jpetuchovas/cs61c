@@ -220,8 +220,6 @@ int beargit_commit_hw1(const char *msg) {
     fs_cp(line, commit_file_path);
   }
 
-  // Erase the contents of the index file.
-  freopen(".beargit/.index", "w", findex);
   fclose(findex);
 
   sprintf(commit_file_path, "%s/.msg", commit_dir_path);
@@ -401,6 +399,7 @@ int checkout_commit(const char *commit_id) {
     fs_rm(line);
   }
 
+  // Erase the contents of the index file.
   freopen(".beargit/.index", "w", findex);
   fclose(findex);
 
