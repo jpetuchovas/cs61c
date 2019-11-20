@@ -393,6 +393,39 @@ int beargit_branch() {
 
 int checkout_commit(const char *commit_id) {
   /* COMPLETE THE REST */
+  FILE *findex = fopen(".beargit/.index", "r");
+
+  char line[FILENAME_SIZE];
+  while (fgets(line, sizeof(line), findex)) {
+    strtok(line, "\n");
+    fs_rm(line);
+  }
+
+  freopen(".beargit/.index", "w", findex);
+  fclose(findex);
+
+  write_string_to_file(".beargit/.prev", commit_id);
+
+  if (commit_id[0] == '0') {
+    return 0;
+  }
+
+  char commit_dir_path[COMMIT_DIR_PATH_SIZE];
+  sprintf(commit_dir_path, ".beargit/%s", commit_id);
+  char commit_file_path[COMMIT_FILE_PATH_SIZE];
+  sprintf(commit_file_path, "%s/.index", commit_dir_path);
+  fs_cp(commit_file_path, ".beargit/.index");
+
+  findex = fopen(".beargit/.index", "r");
+
+  while (fgets(line, sizeof(line), findex)) {
+    strtok(line, "\n");
+    sprintf(commit_file_path, "%s/%s", commit_dir_path, line);
+    fs_cp(commit_file_path, line);
+  }
+
+  fclose(findex);
+
   return 0;
 }
 
