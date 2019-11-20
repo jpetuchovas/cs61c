@@ -126,7 +126,7 @@ int beargit_rm(const char *filename) {
     fs_rm(".beargit/.newindex");
     fprintf(stderr, "ERROR: File %s not tracked\n", filename);
     return 1;
-   }
+  }
 
   fclose(findex);
   fclose(fnewindex);
